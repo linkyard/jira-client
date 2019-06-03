@@ -753,6 +753,19 @@ public final class Field {
                 return ((TimeTracking) value).toJsonObject();
 
             return value;
+        } else if (m.type.equals("issuelinks")) {
+            if (value == null)
+                return "";
+            else if (value instanceof List)
+                return toJsonMap((List)value);
+            else if (value instanceof ValueTuple) {
+                JSONObject json = new JSONObject();
+                ValueTuple tuple = (ValueTuple)value;
+                json.put(tuple.type, tuple.value.toString());
+                return json.toString();
+            }
+
+            return value.toString();
         }
 
         throw new UnsupportedOperationException(m.type + " is not a supported field type");
